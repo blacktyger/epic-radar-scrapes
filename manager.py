@@ -3,9 +3,7 @@ import threading
 import time
 
 import requests
-
-try: import settings
-except: from . import settings
+import _settings
 
 
 class ExplorerScrapes:
@@ -17,7 +15,7 @@ class ExplorerScrapes:
     """
     from explorer.explorer_epic_tech import EpicTechScrape
     SCRAPES = [EpicTechScrape]
-    DATABASE = settings.Database
+    DATABASE = _settings.Database
     INTERVAL = 5
 
     def run(self):
@@ -48,7 +46,7 @@ class VitexScrapes:
     """
     from vitex.vitescan_io_holders_scrape import ViteScanHoldersScrape
     SCRAPES = [ViteScanHoldersScrape]
-    DATABASE = settings.Database
+    DATABASE = _settings.Database
     INTERVAL = 2 * 60
 
     def run(self):

@@ -5,7 +5,7 @@ import datetime
 import json
 import requests
 
-from .. import settings
+import _settings
 
 """RESPONSE TEMPLATE:
 
@@ -27,7 +27,7 @@ response = {
 class ExplorerScrape:
     """Base class for Epic explorers scrapes, one scrape for one source
     """
-    algos: list = settings.Blockchain.ALGORITHMS
+    algos: list = _settings.Blockchain.ALGORITHMS
     api_url: str
     api_calls: dict
 

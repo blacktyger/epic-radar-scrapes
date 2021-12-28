@@ -6,14 +6,14 @@ Scrape is connecting to official Epic-Cash Explorer API_URL,
 data is streaming from explorer archive node (recommended as main scrape for feed)
 """
 
-from .. import settings
+import _settings
 from .base_scrape import ExplorerScrape
 
 
 class EpicTechScrape(ExplorerScrape):
-    api_url = settings.FEED_API.EXPLORER_EPIC_TECH.API_URL
-    api_calls = settings.FEED_API.EXPLORER_EPIC_TECH.API_CALLS
-    public_api_url = settings.FEED_API.EXPLORER_EPIC_TECH.PUBLIC_API_URL
+    api_url = _settings.FEED_API.EXPLORER_EPIC_TECH.API_URL
+    api_calls = _settings.FEED_API.EXPLORER_EPIC_TECH.API_CALLS
+    public_api_url = _settings.FEED_API.EXPLORER_EPIC_TECH.PUBLIC_API_URL
 
     def _get_latest_block(self):
         url = f"{self.api_url}/{self.api_calls['latest_block']}"

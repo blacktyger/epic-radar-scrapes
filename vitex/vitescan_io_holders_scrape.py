@@ -3,11 +3,11 @@ import json
 
 import pandas as pd
 
-from .. import settings
+import _settings
 
 
-DATABASE = settings.FEED_API.VITESCAN_IO
-DECIMAL = settings.Blockchain.DECIMAL
+DATABASE = _settings.FEED_API.VITESCAN_IO
+DECIMAL = _settings.Blockchain.DECIMAL
 
 class ViteScanHoldersScrape:
 
