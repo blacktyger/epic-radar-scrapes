@@ -7,7 +7,8 @@ import time
 
 import requests
 
-import settings
+try: from .. import settings
+except: import settings
 from vitex.vitescan_io_holders_scrape import ViteScanHoldersScrape
 
 SCRAPES = [ViteScanHoldersScrape]

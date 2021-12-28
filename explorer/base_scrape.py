@@ -4,8 +4,9 @@ base_scrape.py - template and base class for Epic-Cash explorer/node scrapes.
 import datetime
 import json
 import requests
-import settings
 
+try: from .. import settings
+except: import settings
 
 """RESPONSE TEMPLATE:
 

@@ -3,7 +3,8 @@ import json
 
 import pandas as pd
 
-import settings
+try: from .. import settings
+except: import settings
 
 
 DATABASE = settings.FEED_API.VITESCAN_IO

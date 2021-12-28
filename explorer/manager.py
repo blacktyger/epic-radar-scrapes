@@ -10,7 +10,8 @@ import time
 
 import requests
 
-import settings
+try: from .. import settings
+except: import settings
 from explorer.explorer_epic_tech import EpicTechScrape
 
 SCRAPES = [EpicTechScrape]
