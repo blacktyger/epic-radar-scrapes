@@ -5,7 +5,7 @@ import datetime
 import json
 import requests
 
-from . import settings
+from .. import settings
 
 """RESPONSE TEMPLATE:
 
