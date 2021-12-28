@@ -1,6 +1,6 @@
 from decimal import *
 
-from vitexpy import PublicAPI, Token, TradingPair
+from .vitexpy import PublicAPI, Token, TradingPair
 import _settings
 
 getcontext().prec = 2
