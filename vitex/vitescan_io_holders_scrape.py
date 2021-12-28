@@ -7,7 +7,7 @@ from scrapes import settings
 
 
 DATABASE = settings.FEED_API.VITESCAN_IO
-
+DECIMAL = settings.Blockchain.DECIMAL
 
 class ViteScanHoldersScrape:
 
@@ -27,15 +27,22 @@ class ViteScanHoldersScrape:
             data = json.load(f)
 
         df = pd.DataFrame(data)
-        balance_mean = df['totalBalance'].mean() / 10 ** 8
-        dex_mean = df['dexAvailableBalance'].mean() / 10 ** 8
-        dex_locked_mean = df['dexLockedBalance'].mean() / 10 ** 8
+        total_coins = df['totalBalance'].sum() / DECIMAL
+        total_dex = (df['dexAvailableBalance'].sum() + df['dexLockedBalance'].sum()) / DECIMAL
+        total_wallets = total_coins - total_dex
+        balance_mean = df['totalBalance'].mean() / DECIMAL
+        dex_mean = df['dexAvailableBalance'].mean() / DECIMAL
+        dex_locked_mean = df['dexLockedBalance'].mean() / DECIMAL
 
         response = {
-            'balance_mean': balance_mean,
-            'dex_mean': dex_mean,
+            'total_coins': total_coins,
+            'total_in_wallets': total_wallets,
+            'total_in_dex': total_dex,
+            'total_mean': balance_mean,
+            'dex_available_mean': dex_mean,
             'dex_locked_mean': dex_locked_mean
             }
+        print(response)
 
         return response
 

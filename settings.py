@@ -78,6 +78,7 @@ class FEED_API:
 
 
 class Blockchain:
+    DECIMAL = 10 ** 8
     HALVINGS = [1157760, 1224000, 2275200]
     BLOCK_TIME = 60
     ALGORITHMS = ['cuckoo', 'progpow', 'randomx']
