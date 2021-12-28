@@ -47,14 +47,22 @@ class MarketData:
                 return 0
 
 
+class Vitex:
+    EPIC_SYMBOL = "EPIC-002"
+    BTC_SYMBOL = "BTC-000"
+    DECIMAL = 10 ** 8
+
+
 class Mining:
     CALCULATOR_PERIODS = [1, 3, 7]
 
 
 class Database:
     API_URL = "https://epic-radar.com/api/"
+
+    API_GET_VITEX_HOLDERS = "vitex_holders/"
+    API_GET_VITEX_UPDATE = "vitex/"
     API_GET_BLOCKS = "block/"
-    API_GET_VITEX = 'vitex/'
 
     def get_last_block_data(self):
         response = requests.get(f"{self.API_URL}{self.API_GET_BLOCKS}")

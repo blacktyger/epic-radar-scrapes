@@ -1,5 +1,5 @@
-import json
 import threading
+import json
 import time
 
 import requests
@@ -40,7 +40,7 @@ class ExplorerScrapes:
             time.sleep(self.INTERVAL)
 
 
-class VitexScrapes:
+class ViteScanScrapes:
     """
     ViteScan.io scrape to get EPIC-002 holders stats
     """
@@ -64,12 +64,12 @@ class VitexScrapes:
                         'holders_stats': stats
                         }
 
-                    url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX}"
+                    url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_HOLDERS}"
                     response = requests.post(url=url, data=json.dumps(response),
                                              headers={'Content-Type': 'application/json'})
 
                     if response.status_code in [200, 201]:
-                        print(f'DB RESPONSE [{response.status_code}] - Added new VitexUpdate')
+                        print(f'DB RESPONSE [{response.status_code}] - Added new VitexHoldersUpdate')
                     else:
                         print(response.text)
 
@@ -82,14 +82,48 @@ class VitexScrapes:
             time.sleep(self.INTERVAL)
 
 
+class VitexScrapes:
+    """
+    Vitex.net scrapes to get EPIC-002 DEX trading data
+    """
+    from vitex.vitex_api_scrape import VitexScrape
+    SCRAPES = [VitexScrape]
+    DATABASE = _settings.Database
+    INTERVAL = 30
+
+    def run(self):
+        print(f"STARTING VITEX SCRAPE...")
+        while True:
+            for scrape in self.SCRAPES:
+                try:
+                    response = scrape().get_update()
+
+                    url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_UPDATE}"
+                    response = requests.post(url=url, data=json.dumps(response),
+                                             headers={'Content-Type': 'application/json'})
+
+                    if response.status_code in [200, 201]:
+                        print(f'DB RESPONSE [{response.status_code}] - Added new VitexUpdate')
+                    else:
+                        print(response.text)
+                except Exception as e:
+                    print(e)
+                    continue
+
+            time.sleep(self.INTERVAL)
+
+
 if __name__ == '__main__':
     explorer_scrapes = threading.Thread(target=ExplorerScrapes().run, daemon=True)
+    vitescan_scrapes = threading.Thread(target=ViteScanScrapes().run, daemon=True)
     vitex_scrapes = threading.Thread(target=VitexScrapes().run, daemon=True)
 
     explorer_scrapes.start()
+    vitescan_scrapes.start()
     vitex_scrapes.start()
 
     explorer_scrapes.join()
+    vitescan_scrapes.join()
     vitex_scrapes.join()
 
     print('Scrapes terminated.')
