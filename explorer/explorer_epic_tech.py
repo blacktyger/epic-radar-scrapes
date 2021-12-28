@@ -6,8 +6,8 @@ Scrape is connecting to official Epic-Cash Explorer API_URL,
 data is streaming from explorer archive node (recommended as main scrape for feed)
 """
 
-from scrapes import settings
-from scrapes.explorer.base_scrape import ExplorerScrape
+from . import settings
+from .explorer.base_scrape import ExplorerScrape
 
 
 class EpicTechScrape(ExplorerScrape):
