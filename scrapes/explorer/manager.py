@@ -10,9 +10,8 @@ import time
 
 import requests
 
-try: from .. import settings
-except: import settings
-from explorer.explorer_epic_tech import EpicTechScrape
+from scrapes import settings
+from scrapes.explorer.explorer_epic_tech import EpicTechScrape
 
 SCRAPES = [EpicTechScrape]
 DATABASE = settings.Database

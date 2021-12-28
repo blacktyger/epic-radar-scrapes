@@ -5,8 +5,7 @@ import datetime
 import json
 import requests
 
-try: from .. import settings
-except: import settings
+from scrapes import settings
 
 """RESPONSE TEMPLATE:
 
