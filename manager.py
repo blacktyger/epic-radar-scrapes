@@ -1,9 +1,14 @@
+from datetime import datetime
 import threading
 import json
 import time
 
 import requests
 import _settings
+
+
+def log_time():
+    return f"{datetime.now().day}/{datetime.now().month} {str(datetime.now().time()).split('.')[0]}: "
 
 
 class ExplorerScrapes:
@@ -27,12 +32,13 @@ class ExplorerScrapes:
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_BLOCKS}"
                     response = requests.post(url=url, data=json.dumps(block), headers={'Content-Type': 'application/json'})
                     if response.status_code == 201:
-                        print(f'DB RESPONSE [{response.status_code}] - Added new block [{block["height"]}]')
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}] - Added new block [{block["height"]}]')
                     else:
                         if 'height' in json.loads(response.content).keys():
-                            print(f'DB RESPONSE [{response.status_code}] - Block [{block["height"]}] already in database')
+                            pass
+                            # print(f'DB RESPONSE [{response.status_code}] - Block [{block["height"]}] already in database')
                         else:
-                            print(f" DB RESPONSE [{response.status_code}] ", json.loads(response.content))
+                            print(f"{log_time()} DB RESPONSE [{response.status_code}] ", json.loads(response.content))
                 except Exception as e:
                     print(e)
                     continue
@@ -69,7 +75,7 @@ class ViteScanScrapes:
                                              headers={'Content-Type': 'application/json'})
 
                     if response.status_code in [200, 201]:
-                        print(f'DB RESPONSE [{response.status_code}] - Added new VitexHoldersUpdate')
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}] - Added new VitexHoldersUpdate')
                     else:
                         print(response.text)
 
@@ -103,7 +109,7 @@ class VitexScrapes:
                                              headers={'Content-Type': 'application/json'})
 
                     if response.status_code in [200, 201]:
-                        print(f'DB RESPONSE [{response.status_code}] - Added new VitexUpdate')
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}] - Added new VitexUpdate')
                     else:
                         print(response.text)
                 except Exception as e:
@@ -126,4 +132,4 @@ if __name__ == '__main__':
     vitescan_scrapes.join()
     vitex_scrapes.join()
 
-    print('Scrapes terminated.')
+    print(f'{log_time()} Scrapes terminated.')
