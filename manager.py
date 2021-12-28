@@ -32,7 +32,8 @@ class ExplorerScrapes:
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_BLOCKS}"
                     response = requests.post(url=url, data=json.dumps(block), headers={'Content-Type': 'application/json'})
                     if response.status_code == 201:
-                        print(f'{log_time()} DB RESPONSE [{response.status_code}] - Added new block [{block["height"]}]')
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}]'
+                              f' - Added new block [{block["height"]}] [SLEEP: {self.INTERVAL}]')
                     else:
                         if 'height' in json.loads(response.content).keys():
                             pass
@@ -75,11 +76,10 @@ class ViteScanScrapes:
                                              headers={'Content-Type': 'application/json'})
 
                     if response.status_code in [200, 201]:
-                        print(f'{log_time()} DB RESPONSE [{response.status_code}] - Added new VitexHoldersUpdate')
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}]'
+                              f' - Added new VitexHoldersUpdate [SLEEP: {self.INTERVAL}]')
                     else:
                         print(response.text)
-
-                    print(f'Waiting [{self.INTERVAL} seconds]')
 
                 except Exception as e:
                     print(e)
@@ -109,7 +109,8 @@ class VitexScrapes:
                                              headers={'Content-Type': 'application/json'})
 
                     if response.status_code in [200, 201]:
-                        print(f'{log_time()} DB RESPONSE [{response.status_code}] - Added new VitexUpdate')
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}]'
+                              f' - Added new VitexUpdate [SLEEP: {self.INTERVAL}]')
                     else:
                         print(response.text)
                 except Exception as e:

@@ -42,7 +42,6 @@ class ViteScanHoldersScrape:
             'dex_available_mean': dex_mean,
             'dex_locked_mean': dex_locked_mean
             }
-        print(response)
 
         return response
 
