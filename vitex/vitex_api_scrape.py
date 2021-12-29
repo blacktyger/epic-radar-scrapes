@@ -47,7 +47,7 @@ class VitexScrape:
                 '24h_percentage': round(float(changes['priceChangePercent']), 2),
                 '24h_quota': '{:.8f}'.format(float(changes['priceChange'])),
                 },
-            '24h_volume': {
+            'volume': {
                 'epic': round(float(ticker['volume']), 2),
                 'btc': round(float(ticker['baseVolume']), 2),
                 'usd': round(float(btc_usd) * float(ticker['baseVolume']), 2)
