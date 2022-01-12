@@ -99,6 +99,9 @@ class VitexScrapes:
 
     def run(self):
         print(f"STARTING VITEX SCRAPE...")
+
+        first = True  # To save historical snapshot in given interval
+
         while True:
             for scrape in self.SCRAPES:
                 try:
@@ -114,19 +117,25 @@ class VitexScrapes:
                     else:
                         print(response.text)
 
-                    history_time = datetime.now().minute in [7, 8, 9]
-                    print(f"time: {datetime.now().minute}, history: {history_time}")
+                    # Check against new hour
+                    history_time = datetime.now().minute in [15, 16, 17, 18]
 
                     if history_time:
-                        url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_HISTORY}"
-                        response = requests.post(url=url, data=json.dumps(history_update),
-                                                 headers={'Content-Type': 'application/json'})
+                        if first:
+                            # If no history snapshot done yet
+                            url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_HISTORY}"
+                            response = requests.post(url=url, data=json.dumps(history_update),
+                                                     headers={'Content-Type': 'application/json'})
 
-                        if response.status_code in [200, 201]:
-                            print(f'{log_time()} DB RESPONSE [{response.status_code}]'
-                                  f' - Added new VitexHistory Snapshot')
-                        else:
-                            print(response.text)
+                            if response.status_code in [200, 201]:
+                                print(f'{log_time()} DB RESPONSE [{response.status_code}]'
+                                      f' - Added new VitexHistory Snapshot')
+                                first = False
+                            else:
+                                print(response.text)
+                    else:
+                        # Reset new hour flag
+                        first = True
 
                 except Exception as e:
                     print(f"VitexScrapes:\n{e}")
