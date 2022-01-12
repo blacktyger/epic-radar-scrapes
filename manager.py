@@ -41,7 +41,7 @@ class ExplorerScrapes:
                         else:
                             print(f"{log_time()} DB RESPONSE [{response.status_code}] ", json.loads(response.content))
                 except Exception as e:
-                    print(e)
+                    print(f"ExplorerScrapes:\n{e}")
                     continue
 
             time.sleep(self.INTERVAL)
@@ -77,12 +77,12 @@ class ViteScanScrapes:
 
                     if response.status_code in [200, 201]:
                         print(f'{log_time()} DB RESPONSE [{response.status_code}]'
-                              f' - Added new VitexHoldersUpdate [SLEEP: {self.INTERVAL}]')
+                              f' - Added new VitexHolders [SLEEP: {self.INTERVAL}]')
                     else:
                         print(response.text)
 
                 except Exception as e:
-                    print(e)
+                    print(f"VitexScan:\n{e}")
                     continue
 
             time.sleep(self.INTERVAL)
@@ -129,7 +129,7 @@ class VitexScrapes:
                             print(response.text)
 
                 except Exception as e:
-                    print(e)
+                    print(f"VitexScrapes:\n{e}")
                     continue
 
             time.sleep(self.INTERVAL)
