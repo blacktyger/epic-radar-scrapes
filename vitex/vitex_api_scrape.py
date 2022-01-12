@@ -36,28 +36,27 @@ class VitexScrape:
         ticker, changes, trades, asks, bids, candles = self._get_data()
         btc_usd = self.PRICE_FEED.price_btc_vs('USD')
 
-        response = {
-            'price': {
-                'btc': ticker['lastPrice'],
-                'usd': str(Decimal(btc_usd * Decimal(ticker['lastPrice']))),
-                '24h_low': ticker['lowPrice'],
-                '24h_high': ticker['highPrice'],
-                },
-            'change': {
-                '24h_percentage': round(float(changes['priceChangePercent']), 2),
-                '24h_quota': '{:.8f}'.format(float(changes['priceChange'])),
-                },
-            'volume': {
-                'epic': round(float(ticker['volume']), 2),
-                'btc': round(float(ticker['baseVolume']), 2),
-                'usd': round(float(btc_usd) * float(ticker['baseVolume']), 2)
-                },
-            'bids': bids,
-            'asks': asks,
-            'trades': trades,
-            'candles': candles,
-            'tickers': ticker,
+        price = {
+            'btc': ticker['lastPrice'],
+            'usd': str(Decimal(btc_usd * Decimal(ticker['lastPrice']))),
+            '24h_low': ticker['lowPrice'],
+            '24h_high': ticker['highPrice'],
+            }
+        change = {
+            '24h_percentage': round(float(changes['priceChangePercent']), 2),
+            '24h_quota': '{:.8f}'.format(float(changes['priceChange'])),
+            }
+        volume = {
+            'epic': round(float(ticker['volume']), 2),
+            'btc': round(float(ticker['baseVolume']), 2),
+            'usd': round(float(btc_usd) * float(ticker['baseVolume']), 2)
             }
 
-        return response
+        ticker_update = {'price': price, 'change': change, 'volume': volume,
+                         'bids': bids, 'asks': asks, 'trades': trades,
+                         'candles': candles, 'tickers': ticker}
+
+        history_update = {'price': price, 'volume': volume, 'trades': trades}
+
+        return {'ticker_update': ticker_update, 'history_update': history_update}
 
