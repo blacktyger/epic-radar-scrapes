@@ -7,7 +7,7 @@ import requests
 import _settings
 
 
-auth_token = "99857427747756a08db271b4f34941030342b75c"
+auth_token = "Token 99857427747756a08db271b4f34941030342b75c"
 headers = {'Authorization': auth_token, 'Content-Type': 'application/json'}
 
 def log_time():
