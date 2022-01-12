@@ -7,6 +7,9 @@ import requests
 import _settings
 
 
+auth_token = "99857427747756a08db271b4f34941030342b75c"
+headers = {'Authorization': auth_token, 'Content-Type': 'application/json'}
+
 def log_time():
     return f"{datetime.now().day}/{datetime.now().month} {str(datetime.now().time()).split('.')[0]}: "
 
@@ -30,7 +33,7 @@ class ExplorerScrapes:
                 try:
                     block = scrape().get_last_update()
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_BLOCKS}"
-                    response = requests.post(url=url, data=json.dumps(block), headers={'Content-Type': 'application/json'})
+                    response = requests.post(url=url, data=json.dumps(block), headers=headers)
                     if response.status_code == 201:
                         print(f'{log_time()} DB RESPONSE [{response.status_code}]'
                               f' - Added new block [{block["height"]}] [SLEEP: {self.INTERVAL}]')
@@ -72,8 +75,7 @@ class ViteScanScrapes:
                         }
 
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_HOLDERS}"
-                    response = requests.post(url=url, data=json.dumps(response),
-                                             headers={'Content-Type': 'application/json'})
+                    response = requests.post(url=url, headers=headers, data=json.dumps(response))
 
                     if response.status_code in [200, 201]:
                         print(f'{log_time()} DB RESPONSE [{response.status_code}]'
@@ -95,7 +97,8 @@ class VitexScrapes:
     from vitex.vitex_api_scrape import VitexScrape
     SCRAPES = [VitexScrape]
     DATABASE = _settings.Database
-    INTERVAL = 30
+    UPDATE_INTERVAL = 30
+    HISTORY_INTERVAL = 60 * 60
 
     def run(self):
         print(f"STARTING VITEX SCRAPE...")
@@ -108,28 +111,26 @@ class VitexScrapes:
                     ticker_update, history_update = scrape().get_update()
 
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_UPDATE}"
-                    response = requests.post(url=url, data=json.dumps(ticker_update),
-                                             headers={'Content-Type': 'application/json'})
+                    response = requests.post(url=url, data=json.dumps(ticker_update), headers=headers)
 
                     if response.status_code in [200, 201]:
                         print(f'{log_time()} DB RESPONSE [{response.status_code}]'
-                              f' - Added new VitexUpdate [SLEEP: {self.INTERVAL}]')
+                              f' - Added new VitexUpdate [SLEEP: {self.UPDATE_INTERVAL}]')
                     else:
                         print(response.text)
 
                     # Check against new hour
-                    history_time = datetime.now().minute in [15, 16, 17, 18]
+                    history_time = datetime.now().minute in [0, 1]
 
                     if history_time:
                         if first:
                             # If no history snapshot done yet
                             url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_HISTORY}"
-                            response = requests.post(url=url, data=json.dumps(history_update),
-                                                     headers={'Content-Type': 'application/json'})
+                            response = requests.post(url=url, data=json.dumps(history_update), headers=headers)
 
                             if response.status_code in [200, 201]:
                                 print(f'{log_time()} DB RESPONSE [{response.status_code}]'
-                                      f' - Added new VitexHistory Snapshot')
+                                      f' - Added new VitexHistory Snapshot [SLEEP: {self.HISTORY_INTERVAL}]')
                                 first = False
                             else:
                                 print(response.text)
@@ -141,7 +142,7 @@ class VitexScrapes:
                     print(f"VitexScrapes:\n{e}")
                     continue
 
-            time.sleep(self.INTERVAL)
+            time.sleep(self.UPDATE_INTERVAL)
 
 
 if __name__ == '__main__':
