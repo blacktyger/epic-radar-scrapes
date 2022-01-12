@@ -102,10 +102,10 @@ class VitexScrapes:
         while True:
             for scrape in self.SCRAPES:
                 try:
-                    response = scrape().get_update()
+                    ticker_update, history_update = scrape().get_update()
 
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_UPDATE}"
-                    response = requests.post(url=url, data=json.dumps(response),
+                    response = requests.post(url=url, data=json.dumps(ticker_update),
                                              headers={'Content-Type': 'application/json'})
 
                     if response.status_code in [200, 201]:
@@ -113,6 +113,21 @@ class VitexScrapes:
                               f' - Added new VitexUpdate [SLEEP: {self.INTERVAL}]')
                     else:
                         print(response.text)
+
+                    history_time = datetime.now().minute in [51, 52, 53, 54, 55, 56]
+                    print(f"time: {datetime.now().minute}, history: {history_time}")
+
+                    if history_time:
+                        url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_HISTORY}"
+                        response = requests.post(url=url, data=json.dumps(history_update),
+                                                 headers={'Content-Type': 'application/json'})
+
+                        if response.status_code in [200, 201]:
+                            print(f'{log_time()} DB RESPONSE [{response.status_code}]'
+                                  f' - Added new VitexHistory Snapshot')
+                        else:
+                            print(response.text)
+
                 except Exception as e:
                     print(e)
                     continue
