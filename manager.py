@@ -101,10 +101,8 @@ class VitexScrapes:
         print(f"STARTING VITEX SCRAPE...")
         while True:
             for scrape in self.SCRAPES:
-                # try:
+                try:
                     ticker_update, history_update = scrape().get_update()
-
-                    print(ticker_update, history_update)
 
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_UPDATE}"
                     response = requests.post(url=url, data=json.dumps(ticker_update),
@@ -130,9 +128,9 @@ class VitexScrapes:
                         else:
                             print(response.text)
 
-                # except Exception as e:
-                #     print(f"VitexScrapes:\n{e}")
-                #     continue
+                except Exception as e:
+                    print(f"VitexScrapes:\n{e}")
+                    continue
 
             time.sleep(self.INTERVAL)
 

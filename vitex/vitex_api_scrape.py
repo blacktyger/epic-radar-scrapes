@@ -58,5 +58,5 @@ class VitexScrape:
 
         history_update = {'price': price, 'volume': volume, 'trades': trades}
 
-        return {'ticker_update': ticker_update, 'history_update': history_update}
+        return ticker_update, history_update
 
