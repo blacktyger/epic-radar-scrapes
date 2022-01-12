@@ -114,7 +114,7 @@ class VitexScrapes:
                     else:
                         print(response.text)
 
-                    history_time = datetime.now().minute in [51, 52, 53, 54, 55, 56]
+                    history_time = datetime.now().minute in [7, 8, 9]
                     print(f"time: {datetime.now().minute}, history: {history_time}")
 
                     if history_time:
