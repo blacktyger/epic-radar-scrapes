@@ -60,9 +60,11 @@ class Mining:
 class Database:
     API_URL = "https://epic-radar.com/api/"
 
-    API_GET_VITEX_HOLDERS = "vitex_holders/"
-    API_GET_VITEX_UPDATE = "vitex/"
-    API_GET_BLOCKS = "block/"
+    API_GET_VITEX_UPDATE = "vitex/update/"
+    API_GET_VITEX_HISTORY = "vitex/history/"
+    API_GET_VITEX_HOLDERS = "vitex/holders/"
+
+    API_GET_BLOCKS = "explorer/blocks/"
 
     def get_last_block_data(self):
         response = requests.get(f"{self.API_URL}{self.API_GET_BLOCKS}")
