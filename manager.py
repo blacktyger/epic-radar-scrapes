@@ -104,6 +104,8 @@ class VitexScrapes:
                 try:
                     ticker_update, history_update = scrape().get_update()
 
+                    print(ticker_update, history_update)
+
                     url = f"{self.DATABASE.API_URL}{self.DATABASE.API_GET_VITEX_UPDATE}"
                     response = requests.post(url=url, data=json.dumps(ticker_update),
                                              headers={'Content-Type': 'application/json'})
