@@ -153,8 +153,8 @@ class CoingeckoScrapes:
     """
     Coingecko.com scrapes to get EPIC trading data
     """
-    from coingecko.coingecko_com import CoingeckoComScrape
-    SCRAPES = [CoingeckoComScrape]
+    # from coingecko.coingecko_com import CoingeckoComScrape
+    SCRAPES = []  # CoingeckoComScrape
     DATABASE = _settings.Database
     UPDATE_INTERVAL = 30
 
