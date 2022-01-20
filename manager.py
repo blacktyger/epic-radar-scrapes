@@ -2,13 +2,17 @@ from datetime import datetime
 import threading
 import json
 import time
+import sys
 
 import requests
 import _settings
 
+if 'win' in sys.platform:
+    auth_token = "cbb072c17048624e608e349bb4de6c94cb97a78c"
+else:
+    auth_token = "99857427747756a08db271b4f34941030342b75c"
 
-auth_token = "Token 99857427747756a08db271b4f34941030342b75c"
-headers = {'Authorization': auth_token, 'Content-Type': 'application/json'}
+headers = {'Authorization': f"Token {auth_token}", 'Content-Type': 'application/json'}
 
 def log_time():
     return f"{datetime.now().day}/{datetime.now().month} {str(datetime.now().time()).split('.')[0]}: "
@@ -145,17 +149,52 @@ class VitexScrapes:
             time.sleep(self.UPDATE_INTERVAL)
 
 
+class CoingeckoScrapes:
+    """
+    Coingecko.com scrapes to get EPIC trading data
+    """
+    from coingecko.coingecko_com import CoingeckoComScrape
+    SCRAPES = [CoingeckoComScrape]
+    DATABASE = _settings.Database
+    UPDATE_INTERVAL = 30
+
+    def run(self):
+        print(f"STARTING COINGECKO SCRAPE...")
+
+        while True:
+            for scrape in self.SCRAPES:
+                try:
+                    epic_vs_ = scrape().update()
+                    url = f"{self.DATABASE.API_URL}{self.DATABASE.COINGECKO_EPIC_VS}"
+                    response = requests.post(url=url, data=json.dumps(epic_vs_), headers=headers)
+
+                    if response.status_code in [200, 201]:
+                        print(f'{log_time()} DB RESPONSE [{response.status_code}]'
+                              f' - Added new COINGECKO Update [SLEEP: {self.UPDATE_INTERVAL}]')
+                    else:
+                        print(response.text)
+
+                except Exception as e:
+                    print(f"VitexScrapes:\n{e}")
+                    continue
+
+            time.sleep(self.UPDATE_INTERVAL)
+
+
 if __name__ == '__main__':
+    coingecko_scrapes = threading.Thread(target=CoingeckoScrapes().run, daemon=True)
     explorer_scrapes = threading.Thread(target=ExplorerScrapes().run, daemon=True)
     vitescan_scrapes = threading.Thread(target=ViteScanScrapes().run, daemon=True)
     vitex_scrapes = threading.Thread(target=VitexScrapes().run, daemon=True)
 
+    vitex_scrapes.start()
     explorer_scrapes.start()
     vitescan_scrapes.start()
-    vitex_scrapes.start()
+    coingecko_scrapes.start()
 
+    vitex_scrapes.join()
     explorer_scrapes.join()
     vitescan_scrapes.join()
-    vitex_scrapes.join()
+    coingecko_scrapes.join()
 
     print(f'{log_time()} Scrapes terminated.')
