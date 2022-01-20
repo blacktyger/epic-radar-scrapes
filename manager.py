@@ -182,7 +182,7 @@ class CoingeckoScrapes:
 
 
 if __name__ == '__main__':
-    coingecko_scrapes = threading.Thread(target=CoingeckoScrapes().run, daemon=True)
+    # coingecko_scrapes = threading.Thread(target=CoingeckoScrapes().run, daemon=True)
     explorer_scrapes = threading.Thread(target=ExplorerScrapes().run, daemon=True)
     vitescan_scrapes = threading.Thread(target=ViteScanScrapes().run, daemon=True)
     vitex_scrapes = threading.Thread(target=VitexScrapes().run, daemon=True)
@@ -190,11 +190,11 @@ if __name__ == '__main__':
     vitex_scrapes.start()
     explorer_scrapes.start()
     vitescan_scrapes.start()
-    coingecko_scrapes.start()
+    # coingecko_scrapes.start()
 
     vitex_scrapes.join()
     explorer_scrapes.join()
     vitescan_scrapes.join()
-    coingecko_scrapes.join()
+    # coingecko_scrapes.join()
 
     print(f'{log_time()} Scrapes terminated.')
