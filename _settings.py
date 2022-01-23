@@ -90,7 +90,7 @@ class Database:
     API_GET_VITEX_HISTORY = "vitex/history/"
     API_GET_VITEX_HOLDERS = "vitex/holders/"
 
-    COINGECKO_EPIC_VS = "coingecko/epic_vs/"
+    COINGECKO_EPIC_VS = "coingecko/"
 
     API_GET_BLOCKS = "explorer/blocks/"
     API_GET_POOLS = "explorer/pools/"
