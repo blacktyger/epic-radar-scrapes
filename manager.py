@@ -165,7 +165,7 @@ class CoingeckoScrapes:
             for scrape in self.SCRAPES:
                 try:
                     epic_vs_ = scrape().update()
-                    url = f"{self.DATABASE.API_URL}{self.DATABASE.COINGECKO_EPIC_VS}"
+                    url = f"{self.DATABASE.API_URL}{self.DATABASE.COINGECKO}"
                     response = requests.post(url=url, data=json.dumps(epic_vs_), headers=headers)
 
                     if response.status_code in [200, 201]:
