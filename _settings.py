@@ -1,5 +1,5 @@
 """One place for all global settings used in different parts of code"""
-
+import sys
 from json import JSONDecodeError
 from decimal import Decimal
 from typing import Union
@@ -55,16 +55,45 @@ class Vitex:
 
 class Mining:
     CALCULATOR_PERIODS = [1, 3, 7]
+    POOLS = {
+        '51pool': {
+            'url': 'https://51pool.online',
+            'api': 'https://51pool.online/api',
+            'methods': ['/', '/blocks/'],
+            'stratum': ['51pool.online:3416', '51pool.online:4416']
+            },
+        'icemining': {
+            'url': 'https://icemining.ca',
+            'api': 'https://icemining.ca/api/',
+            'stratum': ['epic.hashrate.to:4000']
+            },
+        'epicmine': {
+            'url': 'https://epicmine.org',
+            'api': 'https://api.epicmine.org/pool/',
+            'methods': ['getstats/'],
+            'stratum': ['eu.epicmine.org:3333', 'us.epicmine.org:3333', 'hk.epicmine.org:3333']
+            },
+        # 'fastepic': {
+        #     'url': 'https://fastepic.eu/pool',
+        #     'api': 'https://fastepic.eu/api/',
+        #     'stratum': ['fastepic.eu:4416']
+        #     },
+        }
 
 
 class Database:
-    API_URL = "https://epic-radar.com/api/"
-
+    if 'win' in sys.platform:
+        API_URL = "http://127.0.0.1:8001/api/"
+    else:
+        API_URL = "https://epic-radar.com/api/"
     API_GET_VITEX_UPDATE = "vitex/update/"
     API_GET_VITEX_HISTORY = "vitex/history/"
     API_GET_VITEX_HOLDERS = "vitex/holders/"
 
+    COINGECKO_EPIC_VS = "coingecko/epic_vs/"
+
     API_GET_BLOCKS = "explorer/blocks/"
+    API_GET_POOLS = "explorer/pools/"
 
     def get_last_block_data(self):
         response = requests.get(f"{self.API_URL}{self.API_GET_BLOCKS}")
@@ -85,6 +114,9 @@ class FEED_API:
     class VITESCAN_IO:
         BASE_URL = "https://vitescan.io/"
         HOLDERS_API_URL = "vs-api/token?tokenId=tti_f370fadb275bc2a1a839c753&tabFlag=holders"
+
+    class COINGECKO_COM:
+        BASE_URL = "https://api.coingecko.com/api/v3"
 
 
 class Blockchain:
