@@ -85,7 +85,7 @@ class ViteScanScrapes:
                         print(f'{log_time()} DB RESPONSE [{response.status_code}]'
                               f' - Added new VitexHolders [SLEEP: {self.INTERVAL}]')
                     else:
-                        print(response.text)
+                        print('VitexScan:', response.text)
 
                 except Exception as e:
                     print(f"VitexScan:\n{e}")
@@ -137,7 +137,7 @@ class VitexScrapes:
                                       f' - Added new VitexHistory Snapshot [SLEEP: {self.HISTORY_INTERVAL}]')
                                 first = False
                             else:
-                                print(response.text)
+                                print('VitexScrapes:', response.text)
                     else:
                         # Reset new hour flag
                         first = True
@@ -172,10 +172,10 @@ class CoingeckoScrapes:
                         print(f'{log_time()} DB RESPONSE [{response.status_code}]'
                               f' - Added new COINGECKO Update [SLEEP: {self.UPDATE_INTERVAL}]')
                     else:
-                        print(response.text)
+                        print('COINGECKO:', response.text)
 
                 except Exception as e:
-                    print(f"VitexScrapes:\n{e}")
+                    print(f"COINGECKO:\n{e}")
                     continue
 
             time.sleep(self.UPDATE_INTERVAL)
